@@ -29,11 +29,8 @@ int main(int argc, char** argv)
 {
     PluginLoader *loader = PluginLoader::getInstance();
     
+    //PluginLoader::PluginKey key = loader->composePluginKey()
 
-    vector<PluginLoader::PluginKey> plugins = loader->listPlugins();
-    
-    Plugin plugin = loader->loadPlugin(plugins[0],48000,0);
-    //Vamp::PluginHostAdapter() PercussionOnsetDetector;
     
     
     
