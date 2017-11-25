@@ -670,9 +670,15 @@ done:
 
 int main(int argc, char** argv)
 {
-    enumeratePlugins(PluginInformation);
+    enumeratePlugins(PluginInformationDetailed);
 
-
+    string output = "";
+    
+    int value = runPlugin("VRConcert","Vamp-example-plugins","vamp-example-plugins:zerocrossing",
+                          output,1,"song.wav",
+                          "outputFile.txt",false);
+    
+    cout << output;
 
 
 
