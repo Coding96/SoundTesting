@@ -673,19 +673,23 @@ done:
 
 int main(int argc, char** argv)
 {
-    enumeratePlugins(PluginInformationDetailed);
+    //enumeratePlugins(PluginOutputIds);
 
-    string output = "";
+    string DebugOutput = "";
     
-    int value = runPlugin("VRConcert","Vamp-example-plugins","percussiononsets",
-                          output,1,"/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
+    int exit = runPlugin("VRConcert","Vamp-example-plugins","percussiononsets",
+                          DebugOutput,0,"/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
                           "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/percussionOnsets.txt",false);
     
-     value = runPlugin("VRConcert","Vamp-example-plugins","zerocrossing",
-                          output,1,"/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
+    exit = runPlugin("VRConcert","Vamp-example-plugins","zerocrossing",
+                          DebugOutput,1,"/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
                           "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/zerocrossings.txt",false);
     
-    cout << "output: " << output << " value: " << value;
+    exit = runPlugin("VRConcert","Vamp-example-plugins","fixedtempo",
+                          DebugOutput,0,"/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
+                          "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/fixedtempo.txt",false);
+    
+    cout << "Debug output: " << DebugOutput << " exit(0 success,1 fail): " << exit;
 
 
 
