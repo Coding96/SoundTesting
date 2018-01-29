@@ -34,6 +34,9 @@ enum Verbosity
     PluginInformationDetailed
 };
 
+PluginLoader *myLoader;
+Plugin *myPlugin;
+
 //example function to be delted later
 
 string header(string text, int level)
@@ -674,11 +677,15 @@ int main(int argc, char** argv)
 
     string output = "";
     
-    int value = runPlugin("VRConcert","Vamp-example-plugins","vamp-example-plugins:zerocrossing",
-                          output,1,"song.wav",
-                          "outputFile.txt",false);
+    int value = runPlugin("VRConcert","Vamp-example-plugins","percussiononsets",
+                          output,1,"/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
+                          "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/percussionOnsets.txt",false);
     
-    cout << output;
+     value = runPlugin("VRConcert","Vamp-example-plugins","zerocrossing",
+                          output,1,"/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
+                          "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/zerocrossings.txt",false);
+    
+    cout << "output: " << output << " value: " << value;
 
 
 

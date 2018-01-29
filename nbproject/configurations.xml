@@ -38,7 +38,7 @@
       <compileType>
         <ccTool>
           <standard>8</standard>
-          <commandLine>-lvamp-hostsdk -ldl -lsndfile</commandLine>
+          <commandLine>-lvamp-hostsdk -ldl -lsndfile -O3</commandLine>
         </ccTool>
       </compileType>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
