@@ -1115,14 +1115,14 @@ int main(int argc, char** argv)
     int exit = runPluginPercussionOnset("VRConcert", DebugOutput,0,"/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
                           "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/percussionOnsets.txt",false);
     
-    exit = runPlugin("VRConcert","Vamp-example-plugins","zerocrossing",
+    exit += runPlugin("VRConcert","Vamp-example-plugins","zerocrossing",
                           DebugOutput,0,"/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
                           "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/zerocrossings.txt",false);
     
-    exit = runPluginTempo("VRConcert", DebugOutput,0,"/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
+    exit += runPluginTempo("VRConcert", DebugOutput,0,"/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
                           "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/fixedtempo.txt",false);
     
-    cout << "Debug output: " << DebugOutput << " exit(0 success,1 fail): " << exit;
+    cout << "Debug output: " << DebugOutput << " exit: " << exit;
 
 
 
