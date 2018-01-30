@@ -9,6 +9,10 @@
 #include <set>
 #include <sndfile.h>
 
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+
 #include <cstring>
 #include <cstdlib>
 
@@ -24,6 +28,12 @@ using Vamp::RealTime;
 using Vamp::HostExt::PluginLoader;
 using Vamp::HostExt::PluginWrapper;
 using Vamp::HostExt::PluginInputDomainAdapter;
+
+//function declarations for glut
+void display(void);
+void reshape(int w, int h);
+void keyboard(unsigned char key, int x, int y);
+void animate(void);
 
 enum Verbosity
 { //an enum type to specify output of plugin
@@ -404,11 +414,10 @@ void enumeratePlugins(Verbosity verbosity)
     }
 }
 
-
 int runPluginPercussionOnset(string programName,
-              string output, int outputNo, string wavname,
-              string outfilename, bool useFrames)
-{ 
+                             string output, int outputNo, string wavname,
+                             string outfilename, bool useFrames)
+{
     PluginLoader *loader = PluginLoader::getInstance();
 
     PluginLoader::PluginKey key = loader->composePluginKey("Vamp-example-plugins", "percussiononsets");
@@ -455,8 +464,8 @@ int runPluginPercussionOnset(string programName,
 
     cerr << "Running plugin: \"" << plugin->getIdentifier() << "\"..." << endl;
 
-    plugin->setParameter("threshold",13);
-    plugin->setParameter("sensitivity",35);
+    plugin->setParameter("threshold", 13);
+    plugin->setParameter("sensitivity", 35);
 
     int blockSize = plugin->getPreferredBlockSize();
     int stepSize = plugin->getPreferredStepSize();
@@ -624,9 +633,9 @@ done:
 }
 
 int runPluginTempo(string programName,
-              string output, int outputNo, string wavname,
-              string outfilename, bool useFrames)
-{ 
+                   string output, int outputNo, string wavname,
+                   string outfilename, bool useFrames)
+{
     PluginLoader *loader = PluginLoader::getInstance();
 
     PluginLoader::PluginKey key = loader->composePluginKey("Vamp-example-plugins", "fixedtempo");
@@ -673,7 +682,7 @@ int runPluginTempo(string programName,
 
     cerr << "Running plugin: \"" << plugin->getIdentifier() << "\"..." << endl;
 
-    plugin->setParameter("maxdflen",30);
+    plugin->setParameter("maxdflen", 30);
 
     int blockSize = plugin->getPreferredBlockSize();
     int stepSize = plugin->getPreferredStepSize();
@@ -841,9 +850,9 @@ done:
 }
 
 int runPluginZeroCrossing(string programName,
-              string output, int outputNo, string wavname,
-              string outfilename, bool useFrames)
-{ 
+                          string output, int outputNo, string wavname,
+                          string outfilename, bool useFrames)
+{
     PluginLoader *loader = PluginLoader::getInstance();
 
     PluginLoader::PluginKey key = loader->composePluginKey("Vamp-example-plugins", "zerocrossing");
@@ -1060,21 +1069,72 @@ int main(int argc, char** argv)
     //enumeratePlugins(PluginInformationDetailed);
 
     string DebugOutput = "";
-    
-    int exit = runPluginPercussionOnset("VRConcert", DebugOutput,0,"/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
-                          "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/percussionOnsets.txt",false);
-    
-    exit += runPluginZeroCrossing("VRConcert", DebugOutput,0,"/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
-                          "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/zerocrossings.txt",false);
-    
-    exit += runPluginTempo("VRConcert", DebugOutput,0,"/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
-                          "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/fixedtempo.txt",false);
-    
+
+    int exit = runPluginPercussionOnset("VRConcert", DebugOutput, 0, "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
+                                        "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/percussionOnsets.txt", false);
+
+    exit += runPluginZeroCrossing("VRConcert", DebugOutput, 0, "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
+                                  "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/zerocrossings.txt", false);
+
+    exit += runPluginTempo("VRConcert", DebugOutput, 0, "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
+                           "/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/fixedtempo.txt", false);
+
     cout << "Debug output: " << DebugOutput << " exit: " << exit;
 
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE);
+    glutInitWindowSize(500, 500);
+    glutInitWindowPosition(100, 100);
 
+    glutCreateWindow("VR Concert");
+    glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
+    glutKeyboardFunc(keyboard);
+    glutIdleFunc(animate);
+    glutMainLoop();
 
     return 0;
 }
 
 
+void display(void)
+{
+  glClear(GL_COLOR_BUFFER_BIT);
+  
+
+  glBegin(GL_LINES);
+    glColor3f(1.0,0.0,0.0);
+    glVertex3f(0.0,0.0,0.0);
+    glVertex3f(600000000,0.0,0.0);
+    glColor3f(0.0,1.0,0.0);
+    glVertex3f(0.0,0.0,0.0);
+    glVertex3f(0.0,600000000,0.0);
+    glColor3f(0.0,0.0,1.0);
+    glVertex3f(0.0,0.0,0.0);
+    glVertex3f(0.0,0.0,600000000);
+  glEnd(); 
+  
+  glutSwapBuffers();
+}
+
+void reshape(int w, int h)
+{
+  glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective (48.0, (GLfloat) w/(GLfloat) h, 10000.0, 800000000.0);
+}
+
+void keyboard(unsigned char key, int x, int y)
+{
+  switch (key)
+  {
+    case 27:  /* Escape key */
+      exit(0);
+  }
+} 
+
+void animate(void)
+{
+  
+}
