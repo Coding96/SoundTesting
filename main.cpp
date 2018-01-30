@@ -34,6 +34,8 @@ void display(void);
 void reshape(int w, int h);
 void keyboard(unsigned char key, int x, int y);
 void animate(void);
+void initializeGraphics(void);
+void menu(int i);
 
 enum Verbosity
 { //an enum type to specify output of plugin
@@ -1081,6 +1083,7 @@ int main(int argc, char** argv)
 
     cout << "Debug output: " << DebugOutput << " exit: " << exit;
 
+    
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE);
     glutInitWindowSize(500, 500);
@@ -1096,6 +1099,28 @@ int main(int argc, char** argv)
     return 0;
 }
 
+void initializeGraphics(void)
+{
+    gluLookAt(300,0,300,
+                0,0,0,
+                0,1,0);
+    
+  glutCreateMenu (menu);
+  glutAddMenuEntry ("Quit", 1);
+  glutAttachMenu (GLUT_RIGHT_BUTTON);
+}
+
+void menu(int i)
+{
+    if (i == 1)
+    {
+        exit(0);
+    }
+    else
+    {
+        
+    }
+}
 
 void display(void)
 {
