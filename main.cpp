@@ -18,7 +18,10 @@
 
 #include "system.h"
 
+#include <math.h>
 #include <cmath>
+
+#define DEG_TO_RAD 0.017453293
 
 using namespace std;
 
@@ -36,6 +39,8 @@ void keyboard(unsigned char key, int x, int y);
 void animate(void);
 void initializeGraphics(void);
 void menu(int i);
+void calculate_lookpoint(void);
+void cursor_keys(int key, int x, int y);
 
 enum Verbosity
 { //an enum type to specify output of plugin
@@ -45,6 +50,12 @@ enum Verbosity
     PluginInformation,
     PluginInformationDetailed
 };
+
+//global variables for tracking movement of player
+GLfloat lon = 0, lat = 0;
+GLfloat centerx = 0, centery = 0, centerz = 0;
+GLfloat eyex = 0, eyey = 0, eyez = 0;
+GLfloat upx = 0, upy = 0, upz = 0;
 
 //example function to be delted later
 
@@ -1083,17 +1094,20 @@ int main(int argc, char** argv)
 
     cout << "Debug output: " << DebugOutput << " exit: " << exit;
 
-    
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE);
-    glutInitWindowSize(500, 500);
-    glutInitWindowPosition(100, 100);
 
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGB);
     glutCreateWindow("VR Concert");
+    glutFullScreen();
+    initializeGraphics();
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
     glutKeyboardFunc(keyboard);
     glutIdleFunc(animate);
+    glEnable(GL_POINT_SMOOTH);
+    glEnable(GL_DEPTH_TEST);
+    glShadeModel(GL_SMOOTH);
+    glEnable(GL_NORMALIZE);
     glutMainLoop();
 
     return 0;
@@ -1101,13 +1115,25 @@ int main(int argc, char** argv)
 
 void initializeGraphics(void)
 {
-    gluLookAt(300,0,300,
-                0,0,0,
-                0,1,0);
-    
-  glutCreateMenu (menu);
-  glutAddMenuEntry ("Quit", 1);
-  glutAttachMenu (GLUT_RIGHT_BUTTON);
+    /* Define background colour */
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+
+    eyex = 0.0000000001; /* Set eyepoint at eye height within the scene */
+    eyey = 1.7;
+    eyez = -10.0;
+
+    upx = 0.000000000001; /* Set up direction to the +Y axis  */
+    upy = 1.0;
+    upz = 0.000000000001;
+
+    lon = 0.0000001;
+    lat = 0.0000001;
+
+    calculate_lookpoint();
+
+    glutCreateMenu(menu);
+    glutAddMenuEntry("Quit", 1);
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
 void menu(int i)
@@ -1118,48 +1144,101 @@ void menu(int i)
     }
     else
     {
-        
+
     }
 }
 
 void display(void)
 {
-  glClear(GL_COLOR_BUFFER_BIT);
-  
+    glClearColor(1.0,1.0,1.0,0.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    glBegin(GL_POLYGON);
+    glColor3f(0.0, 0.0, 0.5);
+    glVertex3f(-8000.0, 0.0, -8000.0);
+    glVertex3f(8000.0, 0.0, -8000.0);
+    glVertex3f(8000.0, 0.0, 8000.0);
+    glVertex3f(-8000.0, 0.0, 8000.0);
+    glEnd();
 
-  glBegin(GL_LINES);
-    glColor3f(1.0,0.0,0.0);
-    glVertex3f(0.0,0.0,0.0);
-    glVertex3f(600000000,0.0,0.0);
-    glColor3f(0.0,1.0,0.0);
-    glVertex3f(0.0,0.0,0.0);
-    glVertex3f(0.0,600000000,0.0);
-    glColor3f(0.0,0.0,1.0);
-    glVertex3f(0.0,0.0,0.0);
-    glVertex3f(0.0,0.0,600000000);
-  glEnd(); 
-  
-  glutSwapBuffers();
+
+    glColor3f(0.0, 1.0, 0.0);
+    glutWireSphere(20, 20, 20);
+    
+    
+    
+    calculate_lookpoint();
+    gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
+    glutSwapBuffers();
 }
 
 void reshape(int w, int h)
 {
-  glViewport(0, 0, (GLsizei) w, (GLsizei) h);
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluPerspective (48.0, (GLfloat) w/(GLfloat) h, 10000.0, 800000000.0);
+    glClearColor(0.9, 0.9, 0.9, 1.0);
+    glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(60, (GLfloat) w / (GLfloat) h, 1.0, 10000.0);
+    glMatrixMode(GL_MODELVIEW);
 }
 
 void keyboard(unsigned char key, int x, int y)
 {
-  switch (key)
-  {
-    case 27:  /* Escape key */
-      exit(0);
-  }
-} 
+    fprintf(stderr, "\npressed %d\n", key);
+
+    switch (key)
+    {
+    case 97: //a
+        if (lon < 91)
+        {
+            lon = lon + 1;
+            break;
+        }
+        else
+        {
+            lon = 90;
+            break;
+        }
+        break;
+    case 100: //d
+        if (lon > -91)
+        {
+            lon = lon - 1;
+            break;
+        }
+        else
+        {
+            lon = -90;
+            break;
+        }
+        break;
+    case 115: //w
+        eyex = eyex + sin(DEG_TO_RAD * (lon));
+        eyez = eyez + cos(DEG_TO_RAD * (lon));
+        break;
+    case 119: //s
+        eyex = eyex - sin(DEG_TO_RAD * (lon));
+        eyez = eyez - cos(DEG_TO_RAD * (lon));
+        break;
+    case 27: /* Escape key */
+        exit(0);
+    }
+
+    calculate_lookpoint();
+    glutPostRedisplay();
+}
 
 void animate(void)
 {
-  
+   
+    //glutPostRedisplay();
+}
+
+void calculate_lookpoint(void)
+{
+    centerx = eyex + (cos(DEG_TO_RAD * lat) * sin(DEG_TO_RAD * lon));
+    centery = eyey + (sin(DEG_TO_RAD * lat));
+    centerz = eyez + (cos(DEG_TO_RAD * lat) * cos(DEG_TO_RAD * lon));
+
+    //glutPostRedisplay();
 }
