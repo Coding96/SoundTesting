@@ -1227,7 +1227,9 @@ void calculate_lookpoint(void)
     //glutPostRedisplay();
 }
 
-void percussionFountain()
+void percussionFountain(int x, int y)
 {
+    
+    
     
 }
