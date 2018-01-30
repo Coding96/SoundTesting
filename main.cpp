@@ -52,10 +52,11 @@ enum Verbosity
 };
 
 //global variables for tracking movement of player
-GLfloat lon = 0, lat = 0;
-GLfloat centerx = 0, centery = 0, centerz = 0;
-GLfloat eyex = 0, eyey = 0, eyez = 0;
-GLfloat upx = 0, upy = 0, upz = 0;
+
+GLfloat lon, lat;
+GLfloat centerx, centery, centerz;
+GLfloat eyex, eyey, eyez;
+GLfloat upx, upy, upz;
 
 //example function to be delted later
 
@@ -1116,20 +1117,19 @@ int main(int argc, char** argv)
 void initializeGraphics(void)
 {
     /* Define background colour */
-    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
 
-    eyex = 0.0000000001; /* Set eyepoint at eye height within the scene */
+    eyex = 0.0; /* Set eyepoint at eye height within the scene */
     eyey = 1.7;
     eyez = -10.0;
 
-    upx = 0.000000000001; /* Set up direction to the +Y axis  */
+    upx = 0.0; /* Set up direction to the +Y axis  */
     upy = 1.0;
-    upz = 0.000000000001;
+    upz = 0.0;
 
-    lon = 0.0000001;
-    lat = 0.0000001;
+    lon = 0;
+    lat = 0;
 
-    calculate_lookpoint();
 
     glutCreateMenu(menu);
     glutAddMenuEntry("Quit", 1);
@@ -1150,9 +1150,9 @@ void menu(int i)
 
 void display(void)
 {
-    glClearColor(1.0,1.0,1.0,0.0);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
+
     glBegin(GL_POLYGON);
     glColor3f(0.0, 0.0, 0.5);
     glVertex3f(-8000.0, 0.0, -8000.0);
@@ -1163,18 +1163,17 @@ void display(void)
 
 
     glColor3f(0.0, 1.0, 0.0);
-    glutWireSphere(20, 20, 20);
-    
-    
-    
-    calculate_lookpoint();
+    glutWireSphere(4000, 30, 30);
+
+    glLoadIdentity();
+    calculate_lookpoint(); /* Compute the centre of interest   */
     gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
     glutSwapBuffers();
 }
 
 void reshape(int w, int h)
 {
-    glClearColor(0.9, 0.9, 0.9, 1.0);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
     glViewport(0, 0, (GLsizei) w, (GLsizei) h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -1184,61 +1183,51 @@ void reshape(int w, int h)
 
 void keyboard(unsigned char key, int x, int y)
 {
-    fprintf(stderr, "\npressed %d\n", key);
+    //fprintf(stderr, "\npressed %d\n", key);
 
     switch (key)
     {
+    case 27: /* Escape key */
+        exit(0);
     case 97: //a
-        if (lon < 91)
-        {
-            lon = lon + 1;
-            break;
-        }
-        else
-        {
-            lon = 90;
-            break;
-        }
+        lon = lon + 3;
         break;
     case 100: //d
-        if (lon > -91)
-        {
-            lon = lon - 1;
-            break;
-        }
-        else
-        {
-            lon = -90;
-            break;
-        }
+        lon = lon - 3;
+
         break;
-    case 115: //w
-        eyex = eyex + sin(DEG_TO_RAD * (lon));
-        eyez = eyez + cos(DEG_TO_RAD * (lon));
-        break;
-    case 119: //s
+    case 115: //s
         eyex = eyex - sin(DEG_TO_RAD * (lon));
         eyez = eyez - cos(DEG_TO_RAD * (lon));
         break;
-    case 27: /* Escape key */
-        exit(0);
-    }
+    case 119: //w
+        eyex = eyex + sin(DEG_TO_RAD * (lon));
+        eyez = eyez + cos(DEG_TO_RAD * (lon));
+        break;
 
+    }
     calculate_lookpoint();
-    glutPostRedisplay();
 }
 
 void animate(void)
 {
-   
-    //glutPostRedisplay();
+
+    glutPostRedisplay();
 }
 
 void calculate_lookpoint(void)
 {
-    centerx = eyex + (cos(DEG_TO_RAD * lat) * sin(DEG_TO_RAD * lon));
-    centery = eyey + (sin(DEG_TO_RAD * lat));
-    centerz = eyez + (cos(DEG_TO_RAD * lat) * cos(DEG_TO_RAD * lon));
+    GLfloat tempx = (cos(DEG_TO_RAD * (lat)) * sin(DEG_TO_RAD * (lon))); //convert needed
+    GLfloat tempy = sin(DEG_TO_RAD * (lat));
+    GLfloat tempz = (cos(DEG_TO_RAD * (lat)) * cos(DEG_TO_RAD * (lon)));
 
+    centerx = eyex + tempx;
+    centery = eyey + tempy;
+    centerz = eyez + tempz;
     //glutPostRedisplay();
+}
+
+void percussionFountain()
+{
+    
 }
