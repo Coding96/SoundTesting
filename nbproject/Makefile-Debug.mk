@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/event.o \
 	${OBJECTDIR}/main.o
 
 
@@ -42,8 +43,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-lvamp-hostsdk -ldl -lsndfile -lGL -lGLU -lglut -lX11 -pipe -DFX -DXMESA -lm
-CXXFLAGS=-lvamp-hostsdk -ldl -lsndfile -lGL -lGLU -lglut -lX11 -pipe -DFX -DXMESA -lm
+CCFLAGS=-lvamp-hostsdk -ldl -lsndfile -lGL -lGLU -lglut -lX11 -pipe -DFX -DXMESA -lm -O3
+CXXFLAGS=-lvamp-hostsdk -ldl -lsndfile -lGL -lGLU -lglut -lX11 -pipe -DFX -DXMESA -lm -O3
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -61,6 +62,11 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/soundtesting: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/soundtesting ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/event.o: event.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/event.o event.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}

@@ -8,6 +8,10 @@
 #include <fstream>
 #include <set>
 #include <sndfile.h>
+#include <vector>
+#include <math.h>
+#include <cmath>
+
 
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -17,9 +21,8 @@
 #include <cstdlib>
 
 #include "system.h"
+#include "event.h"
 
-#include <math.h>
-#include <cmath>
 
 #define DEG_TO_RAD 0.017453293
 
@@ -57,6 +60,10 @@ GLfloat lon, lat;
 GLfloat centerx, centery, centerz;
 GLfloat eyex, eyey, eyez;
 GLfloat upx, upy, upz;
+
+//vector for holding events
+std::vector<event> eventVector;
+
 
 //example function to be delted later
 
@@ -1163,6 +1170,7 @@ void display(void)
 
 
     glColor3f(0.0, 1.0, 0.0);
+    
     glutWireSphere(4000, 30, 30);
 
     glLoadIdentity();
@@ -1211,7 +1219,11 @@ void keyboard(unsigned char key, int x, int y)
 
 void animate(void)
 {
-
+    /*event newEvent = event();
+    newEvent.eventAnimate();
+    newEvent.effectType = 2;
+    newEvent.~event();*/
+    
     glutPostRedisplay();
 }
 
@@ -1224,12 +1236,5 @@ void calculate_lookpoint(void)
     centerx = eyex + tempx;
     centery = eyey + tempy;
     centerz = eyez + tempz;
-    //glutPostRedisplay();
 }
 
-void percussionFountain(int x, int y)
-{
-    
-    
-    
-}
