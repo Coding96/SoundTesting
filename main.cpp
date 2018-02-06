@@ -62,8 +62,6 @@ GLfloat upx, upy, upz;
 
 //vector for holding events
 std::vector<event> eventVector;
-
-
 //example function to be delted later
 
 string header(string text, int level)
@@ -1222,6 +1220,8 @@ void animate(void)
     newEvent.eventAnimate();
     newEvent.effectType = 2;
     newEvent.~event();*/
+    
+    //eventVector.at(0).eventAnimate();
     
     glutPostRedisplay();
 }
