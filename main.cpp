@@ -1226,15 +1226,15 @@ void animate(void)
 
     for (int i = 0; i < eventVector.size(); i++)
     {
-        /*
+        
         if (eventVector.at(i).startTime < currentTime)
         {
             eventVector.at(i).eventAnimate();
         }
         if (eventVector.at(i).endTime < currentTime)
         {
-            eventVector.erase(i);
-        }*/
+            eventVector.erase(eventVector.begin() + (i));
+        }
 
     }
 
