@@ -1233,6 +1233,7 @@ void animate(void)
         }
         if (eventVector.at(i).endTime < currentTime)
         {
+            //deletes at index i starting at 0
             eventVector.erase(eventVector.begin() + (i));
         }
 

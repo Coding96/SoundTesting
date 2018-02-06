@@ -9,6 +9,11 @@
 //constructor
 event::event()
 {
+    startTime = 0.0;
+    effectType = 1;
+    duration = 0.5;
+    endTime = startTime + duration;
+    
 }
 
 //constructor
