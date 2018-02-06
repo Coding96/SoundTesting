@@ -8,10 +8,9 @@ public:
     event();
     event(float sTime, int eType, float dur);
     void eventAnimate();
-    void percussionFountain(int x, int y);
     virtual ~event();
 private:
-
+    void percussionFountain(int x, int y);
 };
 
 #endif 
