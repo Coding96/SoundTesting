@@ -3,7 +3,7 @@
 
     float startTime, duration, endTime;
     int effectType;
-    
+    int currentX, currentY;
     
     
 //constructor
@@ -35,7 +35,7 @@ void event::eventAnimate()
         //tempo
         break;
     case 3:
-        //zerocrossings
+        //zerocrossings {vocals}
         break;
     }
 }
