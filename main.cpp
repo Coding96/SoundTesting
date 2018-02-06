@@ -1231,7 +1231,7 @@ void animate(void)
         {
             eventVector.at(i).eventAnimate();
         }
-        if (eventVector.at(i).startTime + eventVector.at(i).duration < currentTime)
+        if (eventVector.at(i).endTime < currentTime)
         {
             eventVector.erase(i);
         }*/

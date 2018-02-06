@@ -3,7 +3,7 @@
 
 class event {
 public:
-    float startTime, duration;
+    float startTime, duration, endTime;
     int effectType;
     event();
     event(float sTime, int eType, float dur);

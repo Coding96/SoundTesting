@@ -1,7 +1,7 @@
 
 #include "event.h"
 
-    float startTime, duration;
+    float startTime, duration, endTime;
     int effectType;
     
     
@@ -17,6 +17,7 @@ event::event(float sTime, int eType, float dur)
     startTime = sTime;
     effectType = eType;
     duration = dur;
+    endTime = startTime + duration;
 }
 
 void event::eventAnimate()
