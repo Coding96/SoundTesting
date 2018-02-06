@@ -1221,7 +1221,16 @@ void animate(void)
     newEvent.effectType = 2;
     newEvent.~event();*/
     
-    //eventVector.at(0).eventAnimate();
+    
+    
+    for(int i =0; i < eventVector.size();i++)
+    {
+        /*
+        if(eventVector.at(i).startTime < currentTime)
+        {
+            eventVector.at(i).eventAnimate();
+        }*/
+    }
     
     glutPostRedisplay();
 }
