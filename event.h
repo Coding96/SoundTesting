@@ -11,7 +11,7 @@ public:
     virtual ~event();
 private:
     int currentX, currentY;
-    void percussionFountain(int x, int y);
+    void percussionFountain();
 };
 
 #endif 

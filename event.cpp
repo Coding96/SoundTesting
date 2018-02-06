@@ -29,7 +29,9 @@ void event::eventAnimate()
 {
     switch(effectType){
     case 1: //fountain
-        percussionFountain(0,0);
+        currentX = 0;
+        currentY = 0;
+        percussionFountain();
         break;
     case 2:
         //tempo
@@ -40,7 +42,7 @@ void event::eventAnimate()
     }
 }
 
-void event::percussionFountain(int x, int y)
+void event::percussionFountain()
 {
     
 }
