@@ -43,7 +43,6 @@ void animate(void);
 void initializeGraphics(void);
 void menu(int i);
 void calculate_lookpoint(void);
-void cursor_keys(int key, int x, int y);
 
 enum Verbosity
 { //an enum type to specify output of plugin
