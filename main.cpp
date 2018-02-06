@@ -62,6 +62,7 @@ GLfloat upx, upy, upz;
 
 //vector for holding events
 std::vector<event> eventVector;
+float currentTime = 0;
 //example function to be delted later
 
 string header(string text, int level)
@@ -1167,7 +1168,7 @@ void display(void)
 
 
     glColor3f(0.0, 1.0, 0.0);
-    
+
     glutWireSphere(4000, 30, 30);
 
     glLoadIdentity();
@@ -1220,18 +1221,23 @@ void animate(void)
     newEvent.eventAnimate();
     newEvent.effectType = 2;
     newEvent.~event();*/
-    
-    
-    
-    for(int i =0; i < eventVector.size();i++)
+
+
+
+    for (int i = 0; i < eventVector.size(); i++)
     {
         /*
-        if(eventVector.at(i).startTime < currentTime)
+        if (eventVector.at(i).startTime < currentTime)
         {
             eventVector.at(i).eventAnimate();
+        }
+        if (eventVector.at(i).startTime + eventVector.at(i).duration < currentTime)
+        {
+            eventVector.erase(i);
         }*/
+
     }
-    
+
     glutPostRedisplay();
 }
 
