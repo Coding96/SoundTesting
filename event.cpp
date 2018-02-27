@@ -5,6 +5,14 @@
     int effectType;
     int currentX, currentY;
     
+    typedef struct {
+        float x,y,z;
+        float xaccel,yaccel,zaccel;
+        float r,g,b;
+        
+    } particle;
+    
+    particle particleArray[1000];
     
 //constructor
 event::event()
@@ -23,6 +31,11 @@ event::event(float sTime, int eType, float dur)
     effectType = eType;
     duration = dur;
     endTime = startTime + duration;
+    
+    if(effectType == 1)
+    {
+        initializeFountain();
+    }
 }
 
 void event::eventAnimate()
@@ -44,7 +57,34 @@ void event::eventAnimate()
 
 void event::percussionFountain()
 {
-    
+    for (int i = 0; i < 999 ; i++)
+    {
+        particleArray[i].x += particleArray[i].xaccel;
+        particleArray[i].y += particleArray[i].yaccel;
+        particleArray[i].z += particleArray[i].zaccel;
+       
+    }
+}
+
+void event::initializeFountain()
+{
+    for (int i = 0; i < 999 ; i++)
+    {
+        particleArray[i].x = 0;
+        particleArray[i].y = 0;
+        particleArray[i].z = 0;
+        
+        //needs to be changed to random
+        particleArray[i].xaccel = 0.1;
+        particleArray[i].yaccel = 0.1;
+        particleArray[i].zaccel = 0.1;
+        
+        //needs to change when genre is implemented
+        
+        particleArray[i].r = 1;
+        particleArray[i].b = 0;
+        particleArray[i].g = 0;
+    }
 }
 
 //destructor
