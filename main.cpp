@@ -12,11 +12,6 @@
 #include <math.h>
 #include <cmath>
 
-
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
-
 #include <cstring>
 #include <cstdlib>
 
@@ -43,6 +38,7 @@ void animate(void);
 void initializeGraphics(void);
 void menu(int i);
 void calculate_lookpoint(void);
+void createEvents();
 
 enum Verbosity
 { //an enum type to specify output of plugin
@@ -1083,6 +1079,45 @@ done:
     return returnValue;
 }
 
+void createEvents()
+{
+    string line = "";
+    ifstream myfile ("/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/percussionOnsets.txt");
+    if(myfile.is_open())
+    {
+        while(getline(myfile,line))
+        {
+            event newEvent = event(std::atof(line.c_str()), 1, 5);
+            eventVector.push_back(newEvent);
+        }
+        myfile.close();
+    }
+    
+    line = "";
+    ifstream myfile2 ("/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/fixedtempo.txt");
+    if(myfile2.is_open())
+    {
+        while(getline(myfile2,line))
+        {
+            event newEvent = event(std::atof(line.c_str()), 2, 5);
+            eventVector.push_back(newEvent);
+        }
+        myfile2.close();
+    }
+    line = "";
+    ifstream myfile3 ("/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/zerocrossings.txt");
+    if(myfile3.is_open())
+    {
+        while(getline(myfile3,line))
+        {
+            event newEvent = event(std::atof(line.c_str()), 3, 5);
+            eventVector.push_back(newEvent);
+        }
+        myfile3.close();
+    }
+    
+}
+
 int main(int argc, char** argv)
 {
     //enumeratePlugins(PluginInformationDetailed);
@@ -1100,6 +1135,8 @@ int main(int argc, char** argv)
 
     cout << "Debug output: " << DebugOutput << " exit: " << exit;
 
+    
+    createEvents();
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGB);
@@ -1217,11 +1254,6 @@ void keyboard(unsigned char key, int x, int y)
 
 void animate(void)
 {
-    /*event newEvent = event();
-    newEvent.eventAnimate();
-    newEvent.effectType = 2;
-    newEvent.~event();*/
-
 
 
     for (int i = 0; i < eventVector.size(); i++)
@@ -1239,6 +1271,7 @@ void animate(void)
         }
 
     }
+    
 
     glutPostRedisplay();
 }

@@ -11,6 +11,7 @@ public:
     int effectType;
     event();
     event(float sTime, int eType, float dur);
+    void setColour(float red, float blue, float green);
     void eventAnimate();
     virtual ~event();
 private:
