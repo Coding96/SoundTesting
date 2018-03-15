@@ -30,10 +30,11 @@ event::event(float sTime, int eType, float dur)
     effectType = eType;
     duration = dur;
     endTime = startTime + duration;
-    currentX = 0;
-    currentZ = 0;
     
-    setupFountain();
+    if(effectType == 1)
+    {
+        setupFountain();
+    }
 }
 
 void event::eventAnimate()
