@@ -10,6 +10,7 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <itemPath>dist/Debug/GNU-Linux/song.wav</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -43,6 +44,8 @@
           <commandLine>-lvamp-hostsdk -ldl -lsndfile -lGL -lGLU -lglut -lX11 -pipe -DFX -DXMESA -lm -O3</commandLine>
         </ccTool>
       </compileType>
+      <item path="dist/Debug/GNU-Linux/song.wav" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="event.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="event.h" ex="false" tool="3" flavor2="0">
@@ -74,6 +77,8 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="dist/Debug/GNU-Linux/song.wav" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="event.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="event.h" ex="false" tool="3" flavor2="0">

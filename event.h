@@ -1,6 +1,10 @@
 #ifndef EVENT_H
 #define EVENT_H
 
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+
 class event {
 public:
     float startTime, duration, endTime;
@@ -10,8 +14,10 @@ public:
     void eventAnimate();
     virtual ~event();
 private:
-    int currentX, currentY;
+    int currentX, currentZ;
     void percussionFountain();
+    void setupFountain();
+    void drawSpheres();
 };
 
 #endif 

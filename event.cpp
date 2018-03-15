@@ -3,8 +3,15 @@
 
     float startTime, duration, endTime;
     int effectType;
-    int currentX, currentY;
+    float currentX, currentZ;
+    float r, g, b;
     
+    typedef struct{
+        GLfloat x,y,z;
+        GLfloat xaccel,yaccel,zaccel;
+    } particle;
+    
+    particle particleArray[1000];
     
 //constructor
 event::event()
@@ -23,14 +30,16 @@ event::event(float sTime, int eType, float dur)
     effectType = eType;
     duration = dur;
     endTime = startTime + duration;
+    currentX = 0;
+    currentZ = 0;
+    
+    setupFountain();
 }
 
 void event::eventAnimate()
 {
     switch(effectType){
     case 1: //fountain
-        currentX = 0;
-        currentY = 0;
         percussionFountain();
         break;
     case 2:
@@ -38,11 +47,38 @@ void event::eventAnimate()
         break;
     case 3:
         //zerocrossings {vocals}
+        drawSpheres();
         break;
     }
 }
 
 void event::percussionFountain()
+{
+    glColor3f(r,g,b);
+    
+    for(int i = 0; i < 999; i ++)
+    {
+        glBegin(GL_POINTS);
+            glVertex3f(particleArray[i].x,particleArray[i].y,particleArray[i].z);
+        glEnd;
+        
+        particleArray[i].x += particleArray[i].xaccel;
+        particleArray[i].y += particleArray[i].yaccel;
+        particleArray[i].z += particleArray[i].zaccel;
+    }
+}
+
+void event::setupFountain()
+{
+    for(int i = 0; i < 999; i++)
+    {
+        particleArray[i].x = currentX;
+        particleArray[i].z = currentZ;
+        particleArray[i].y = 0;
+    }
+}
+
+void event::drawSpheres()
 {
     
 }
