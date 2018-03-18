@@ -11,7 +11,7 @@
 #include <vector>
 #include <math.h>
 #include <cmath>
-
+#include <chrono>
 #include <cstring>
 #include <cstdlib>
 
@@ -29,6 +29,7 @@ using Vamp::RealTime;
 using Vamp::HostExt::PluginLoader;
 using Vamp::HostExt::PluginWrapper;
 using Vamp::HostExt::PluginInputDomainAdapter;
+
 
 //function declarations for glut
 void display(void);
@@ -58,7 +59,7 @@ GLfloat upx, upy, upz;
 
 //vector for holding events
 std::vector<event> eventVector;
-float currentTime = 0;
+float currentTime;
 //example function to be delted later
 
 string header(string text, int level)
@@ -1137,6 +1138,7 @@ int main(int argc, char** argv)
 
     
     createEvents();
+    
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGB);
@@ -1255,7 +1257,11 @@ void keyboard(unsigned char key, int x, int y)
 void animate(void)
 {
 
+    
 
+    
+    
+    
     for (int i = 0; i < eventVector.size(); i++)
     {
         
