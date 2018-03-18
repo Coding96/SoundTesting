@@ -20,6 +20,7 @@ private:
     void percussionFountain();
     void setupFountain();
     void drawSpheres();
+    float myRandom();
 };
 
 #endif 

@@ -71,7 +71,7 @@ void event::eventAnimate()
 void event::percussionFountain()
 {
     glColor3f(r,g,b);
-    glPointSize(20);
+    //glPointSize(3);
     
     for(int i = 0; i < 999; i ++)
     {
@@ -82,6 +82,8 @@ void event::percussionFountain()
         particleArray[i].x += particleArray[i].xaccel;
         particleArray[i].y += particleArray[i].yaccel;
         particleArray[i].z += particleArray[i].zaccel;
+        
+        particleArray[i].yaccel -= 0.01;
     }
 }
 
@@ -92,9 +94,9 @@ void event::setupFountain()
         particleArray[i].x = currentX;
         particleArray[i].z = currentZ;
         particleArray[i].y = 0;
-        particleArray[i].xaccel = 0.1;
-        particleArray[i].yaccel = 0.3;
-        particleArray[i].zaccel = 0.1;
+        particleArray[i].xaccel = (myRandom()-0.5)*2;
+        particleArray[i].yaccel = myRandom()*1.3;
+        particleArray[i].zaccel = (myRandom()-0.5)*2;
     }
     
 }
@@ -103,6 +105,12 @@ void event::drawSpheres()
 {
     glColor3f(r,g,b);
     glutSolidSphere(20,10,10);
+}
+
+float event::myRandom()
+//Return random double within range [0,1]
+{
+  return (rand()/(float)RAND_MAX);
 }
 
 //destructor

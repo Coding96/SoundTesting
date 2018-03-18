@@ -43,7 +43,7 @@
       <compileType>
         <ccTool>
           <standard>8</standard>
-          <commandLine>-lvamp-hostsdk -ldl -lsndfile -lGL -lGLU -lglut -lX11 -pipe -DFX -DXMESA -lm -O3</commandLine>
+          <commandLine>-lvamp-hostsdk -ldl -lsndfile -lGL -lGLU -lglut -pipe -lX11 -DFX -DXMESA -lm</commandLine>
         </ccTool>
       </compileType>
       <item path="dist/Debug/GNU-Linux/song.wav" ex="false" tool="3" flavor2="0">

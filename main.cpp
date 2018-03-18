@@ -1136,7 +1136,7 @@ int main(int argc, char** argv)
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGB);
     glutCreateWindow("VR Concert");
-    glutFullScreen();
+    //glutInitWindowSize(1920, 1080);
     initializeGraphics();
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
@@ -1146,6 +1146,7 @@ int main(int argc, char** argv)
     glEnable(GL_DEPTH_TEST);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_NORMALIZE);
+    glutFullScreen();
     glutMainLoop();
 
     return 0;
@@ -1190,6 +1191,7 @@ void display(void)
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
     glBegin(GL_POLYGON);
     glColor3f(0.0, 0.0, 0.5);
     glVertex3f(-8000.0, 0.0, -8000.0);
@@ -1202,7 +1204,26 @@ void display(void)
     glColor3f(0.0, 1.0, 0.0);
 
     glutWireSphere(4000, 30, 30);
+
+    cerr << "\n" << t.elapsedTime();
     
+    for (int i = 0; i < eventVector.size(); i++)
+    {
+        
+        if (eventVector.at(i)->startTime <= t.elapsedTime() 
+                && eventVector.at(i)->endTime >= t.elapsedTime())
+        {
+            //cerr << "\nStarted: " << eventVector.at(i)->startTime;
+            eventVector.at(i)->eventAnimate();
+        }
+        else
+        {
+           // cerr << "\nFailed: " << eventVector.at(i)->startTime
+                   // << " , " << eventVector.at(i)->endTime;
+        }
+        
+
+    }
 
 
     glLoadIdentity();
@@ -1251,33 +1272,7 @@ void keyboard(unsigned char key, int x, int y)
 
 void animate(void)
 {
-
-    cerr << "\n" << t.elapsedTime();
     
-    for (int i = 0; i < eventVector.size(); i++)
-    {
-        
-        if (eventVector.at(i)->startTime <= t.elapsedTime() 
-                && eventVector.at(i)->endTime >= t.elapsedTime())
-        {
-            cerr << "\nStarted: " << eventVector.at(i)->startTime;
-            eventVector.at(i)->eventAnimate();
-        }
-        else
-        {
-            cerr << "\nFailed: " << eventVector.at(i)->startTime
-                    << " , " << eventVector.at(i)->endTime;
-        }
-        
-        /*if (eventVector.at(i)->endTime < t.elapsedTime())
-        {
-            //deletes at index i starting at 0
-            eventVector.at(i)->~event();
-            delete eventVector.at(i);
-            eventVector.erase(eventVector.begin() + (i));
-        }*/
-
-    }
 
  
 
