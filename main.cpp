@@ -41,6 +41,7 @@ void initializeGraphics(void);
 void menu(int i);
 void calculate_lookpoint(void);
 void createEvents();
+void audio_callback(void *userdata, Uint8 *stream, int len);
 
 enum Verbosity
 { //an enum type to specify output of plugin
@@ -61,6 +62,12 @@ GLfloat upx, upy, upz;
 //vector for holding events
 std::vector<event*> eventVector;
 timer t;
+static Uint32 wavl;
+static Uint32 audiol;
+static Uint8 *wavbuffer;
+static Uint8 *audio_pos;
+static SDL_AudioSpec wav_spec;
+bool SDLSetup;
 //example function to be delted later
 
 string header(string text, int level)
@@ -1114,6 +1121,8 @@ void createEvents()
 int main(int argc, char** argv)
 {
     //enumeratePlugins(PluginInformationDetailed);
+    SDLSetup = 0;
+    
 
     string DebugOutput = "";
 
@@ -1131,6 +1140,7 @@ int main(int argc, char** argv)
     
     createEvents();
     
+
     t.start();
     
     glutInit(&argc, argv);
@@ -1147,8 +1157,12 @@ int main(int argc, char** argv)
     glShadeModel(GL_SMOOTH);
     glEnable(GL_NORMALIZE);
     glutFullScreen();
+    SDL_Init(SDL_INIT_AUDIO);
     glutMainLoop();
 
+    SDL_CloseAudio();
+    SDL_FreeWAV(wavbuffer);
+    
     return 0;
 }
 
@@ -1188,6 +1202,23 @@ void menu(int i)
 
 void display(void)
 {
+    if(SDLSetup == 0)
+    {
+        SDL_LoadWAV("/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/song.wav",
+                    &wav_spec, &wavbuffer, &wavl);
+        wav_spec.callback = audio_callback;
+        wav_spec.userdata = NULL;
+        audio_pos = wavbuffer;
+        audiol = wavl;
+        SDL_OpenAudio(&wav_spec,NULL);
+        SDL_PauseAudio(0);
+        SDLSetup = 1;
+    }
+    if(audiol > 0)
+    {
+        SDL_Delay(100);
+    }
+    
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -1205,7 +1236,7 @@ void display(void)
 
     glutWireSphere(4000, 30, 30);
 
-    cerr << "\n" << t.elapsedTime();
+    //cerr << "\n" << t.elapsedTime();
     
     for (int i = 0; i < eventVector.size(); i++)
     {
@@ -1213,7 +1244,7 @@ void display(void)
         if (eventVector.at(i)->startTime <= t.elapsedTime() 
                 && eventVector.at(i)->endTime >= t.elapsedTime())
         {
-            //cerr << "\nStarted: " << eventVector.at(i)->startTime;
+            cerr << "\nStarted: " << eventVector.at(i)->startTime;
             eventVector.at(i)->eventAnimate();
         }
         else
@@ -1249,6 +1280,8 @@ void keyboard(unsigned char key, int x, int y)
     switch (key)
     {
     case 27: /* Escape key */
+        SDL_CloseAudio();
+        SDL_FreeWAV(wavbuffer);
         exit(0);
     case 97: //a
         lon = lon + 3;
@@ -1290,3 +1323,16 @@ void calculate_lookpoint(void)
     centerz = eyez + tempz;
 }
 
+void audio_callback(void *userdata, Uint8 *stream, int len) {
+	
+	if (audiol ==0)
+		return;
+	
+	len = ( len > audiol ? audiol : len );
+	//SDL_memcpy (stream, audio_pos, len);
+        SDL_memset(stream, 0, len);        
+	SDL_MixAudio(stream, audio_pos, len, SDL_MIX_MAXVOLUME);
+	
+	audio_pos += len;
+	audiol -= len;
+}

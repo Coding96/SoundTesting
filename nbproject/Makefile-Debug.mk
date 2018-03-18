@@ -44,8 +44,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-lvamp-hostsdk -ldl -lsndfile -lGL -lGLU -lglut -pipe -lX11 -DFX -DXMESA -lm
-CXXFLAGS=-lvamp-hostsdk -ldl -lsndfile -lGL -lGLU -lglut -pipe -lX11 -DFX -DXMESA -lm
+CCFLAGS=-m64 -lvamp-hostsdk -ldl -lsndfile -lGL -lGLU -lglut -pipe -lX11 -lm -DFX -DXMESA -lSDL2main -lSDL2 -O3
+CXXFLAGS=-m64 -lvamp-hostsdk -ldl -lsndfile -lGL -lGLU -lglut -pipe -lX11 -lm -DFX -DXMESA -lSDL2main -lSDL2 -O3
 
 # Fortran Compiler Flags
 FFLAGS=

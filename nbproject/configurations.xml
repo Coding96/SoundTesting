@@ -42,8 +42,9 @@
       </toolsSet>
       <compileType>
         <ccTool>
+          <architecture>2</architecture>
           <standard>8</standard>
-          <commandLine>-lvamp-hostsdk -ldl -lsndfile -lGL -lGLU -lglut -pipe -lX11 -DFX -DXMESA -lm</commandLine>
+          <commandLine>-lvamp-hostsdk -ldl -lsndfile -lGL -lGLU -lglut -pipe -lX11 -lm -DFX -DXMESA -lSDL2main -lSDL2 -O3</commandLine>
         </ccTool>
       </compileType>
       <item path="dist/Debug/GNU-Linux/song.wav" ex="false" tool="3" flavor2="0">
