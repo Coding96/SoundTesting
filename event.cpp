@@ -33,6 +33,8 @@ event::event(float sTime, int eType, float dur)
     effectType = eType;
     duration = dur;
     endTime = startTime + duration;
+    currentX = 0;
+    currentZ = 0;
     
     if(effectType == 1)
     {
@@ -69,6 +71,7 @@ void event::eventAnimate()
 void event::percussionFountain()
 {
     glColor3f(r,g,b);
+    glPointSize(20);
     
     for(int i = 0; i < 999; i ++)
     {
@@ -90,7 +93,7 @@ void event::setupFountain()
         particleArray[i].z = currentZ;
         particleArray[i].y = 0;
         particleArray[i].xaccel = 0.1;
-        particleArray[i].yaccel = 0.1;
+        particleArray[i].yaccel = 0.3;
         particleArray[i].zaccel = 0.1;
     }
     

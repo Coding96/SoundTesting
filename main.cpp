@@ -59,7 +59,7 @@ GLfloat eyex, eyey, eyez;
 GLfloat upx, upy, upz;
 
 //vector for holding events
-std::vector<event> eventVector;
+std::vector<event*> eventVector;
 timer t;
 //example function to be delted later
 
@@ -1091,10 +1091,11 @@ void createEvents()
         {
             event* newEvent = new event(std::atof(line.c_str()), 1, 5);
             //newEvent = event(std::atof(line.c_str()), 1, 5);
-            eventVector.push_back(*newEvent);
+            eventVector.push_back(newEvent);
         }
         myfile.close();
     }
+    
     
     line = "";
     ifstream myfile3 ("/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/zerocrossings.txt");
@@ -1102,8 +1103,8 @@ void createEvents()
     {
         while(getline(myfile3,line))
         {
-            event* newEvent = new event(std::atof(line.c_str()), 3, 5);
-            eventVector.push_back(*newEvent);
+            //event* newEvent = new event(std::atof(line.c_str()), 3, 5);
+            //eventVector.push_back(*newEvent);
         }
         myfile3.close();
     }
@@ -1201,6 +1202,8 @@ void display(void)
     glColor3f(0.0, 1.0, 0.0);
 
     glutWireSphere(4000, 30, 30);
+    
+
 
     glLoadIdentity();
     calculate_lookpoint(); /* Compute the centre of interest   */
@@ -1249,27 +1252,34 @@ void keyboard(unsigned char key, int x, int y)
 void animate(void)
 {
 
-    
-
-    
-    cerr << "\n" << t.elapsedTime() << "\n";
+    cerr << "\n" << t.elapsedTime();
     
     for (int i = 0; i < eventVector.size(); i++)
     {
         
-        if (eventVector.at(i).startTime < t.elapsedTime())
+        if (eventVector.at(i)->startTime <= t.elapsedTime() 
+                && eventVector.at(i)->endTime >= t.elapsedTime())
         {
-            eventVector.at(i).eventAnimate();
+            cerr << "\nStarted: " << eventVector.at(i)->startTime;
+            eventVector.at(i)->eventAnimate();
         }
-        if (eventVector.at(i).endTime < t.elapsedTime())
+        else
+        {
+            cerr << "\nFailed: " << eventVector.at(i)->startTime
+                    << " , " << eventVector.at(i)->endTime;
+        }
+        
+        /*if (eventVector.at(i)->endTime < t.elapsedTime())
         {
             //deletes at index i starting at 0
-            eventVector.at(i).~event();
+            eventVector.at(i)->~event();
+            delete eventVector.at(i);
             eventVector.erase(eventVector.begin() + (i));
-        }
+        }*/
 
     }
-    
+
+ 
 
     glutPostRedisplay();
 }

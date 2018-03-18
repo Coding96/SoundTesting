@@ -9,7 +9,7 @@ class timer {
 public:
     unsigned long begTime;
     void start();
-    unsigned long elapsedTime();
+    float elapsedTime();
     bool isTimeout(unsigned long seconds);
     timer();
     timer(const timer& orig);
