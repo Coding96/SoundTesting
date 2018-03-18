@@ -17,6 +17,7 @@
 
 #include "system.h"
 #include "event.h"
+#include "timer.h"
 
 
 #define DEG_TO_RAD 0.017453293
@@ -59,7 +60,7 @@ GLfloat upx, upy, upz;
 
 //vector for holding events
 std::vector<event> eventVector;
-float currentTime;
+timer t;
 //example function to be delted later
 
 string header(string text, int level)
@@ -1088,31 +1089,21 @@ void createEvents()
     {
         while(getline(myfile,line))
         {
-            event newEvent = event(std::atof(line.c_str()), 1, 5);
-            eventVector.push_back(newEvent);
+            event* newEvent = new event(std::atof(line.c_str()), 1, 5);
+            //newEvent = event(std::atof(line.c_str()), 1, 5);
+            eventVector.push_back(*newEvent);
         }
         myfile.close();
     }
     
-    line = "";
-    ifstream myfile2 ("/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/fixedtempo.txt");
-    if(myfile2.is_open())
-    {
-        while(getline(myfile2,line))
-        {
-            event newEvent = event(std::atof(line.c_str()), 2, 5);
-            eventVector.push_back(newEvent);
-        }
-        myfile2.close();
-    }
     line = "";
     ifstream myfile3 ("/home/edward/NetBeansProjects/SoundTesting/dist/Debug/GNU-Linux/zerocrossings.txt");
     if(myfile3.is_open())
     {
         while(getline(myfile3,line))
         {
-            event newEvent = event(std::atof(line.c_str()), 3, 5);
-            eventVector.push_back(newEvent);
+            event* newEvent = new event(std::atof(line.c_str()), 3, 5);
+            eventVector.push_back(*newEvent);
         }
         myfile3.close();
     }
@@ -1139,7 +1130,8 @@ int main(int argc, char** argv)
     
     createEvents();
     
-
+    t.start();
+    
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGB);
     glutCreateWindow("VR Concert");
@@ -1260,16 +1252,16 @@ void animate(void)
     
 
     
-    
+    cerr << "\n" << t.elapsedTime() << "\n";
     
     for (int i = 0; i < eventVector.size(); i++)
     {
         
-        if (eventVector.at(i).startTime < currentTime)
+        if (eventVector.at(i).startTime < t.elapsedTime())
         {
             eventVector.at(i).eventAnimate();
         }
-        if (eventVector.at(i).endTime < currentTime)
+        if (eventVector.at(i).endTime < t.elapsedTime())
         {
             //deletes at index i starting at 0
             eventVector.at(i).~event();

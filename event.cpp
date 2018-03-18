@@ -61,7 +61,7 @@ void event::eventAnimate()
         break;
     case 3:
         //zerocrossings {vocals}
-        drawSpheres();
+        //drawSpheres();
         break;
     }
 }
@@ -89,7 +89,11 @@ void event::setupFountain()
         particleArray[i].x = currentX;
         particleArray[i].z = currentZ;
         particleArray[i].y = 0;
+        particleArray[i].xaccel = 0.1;
+        particleArray[i].yaccel = 0.1;
+        particleArray[i].zaccel = 0.1;
     }
+    
 }
 
 void event::drawSpheres()
